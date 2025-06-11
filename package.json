@@ -1,5 +1,29 @@
 {
+  "name": "sequelize-example",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon --exec npx babel-node src/index.js",
+    "babel-node": "babel-node --presets=@babel/preset-env",
+    "dev": "nodemon --exec npm run babel-node src/index.js"
+  },
+  "author": "Pablo Abratte",
+  "license": "ISC",
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.0",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-stage-0": "^6.24.1",
+    "chai": "^4.1.2",
+    "chai-http": "^5.1.2",
+    "mocha": "^11.6.0",
+    "nodemon": "^3.1.10"
+  },
   "dependencies": {
+    "@babel/cli": "^7.27.2",
+    "babel-node": "^0.0.1-security",
     "express": "^5.1.0",
     "install": "^0.13.0",
     "npm": "^11.4.1",
