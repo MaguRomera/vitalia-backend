@@ -49,10 +49,6 @@ sequelize.define('horario',{
         type: DataTypes.STRING,
         allowNull: false
     },
-    fecha: {
-        type: DataTypes.STRING,
-        allowNull: false
-    },
     ocupado: {
         type: DataTypes.BOOLEAN,
         allowNull: false
@@ -69,6 +65,10 @@ sequelize.define('turno',{
         type: DataTypes.INTEGER,
         primaryKey: true,
         autoIncrement: true
+    },
+    fecha: {
+        type: DataTypes.STRING,
+        allowNull: false
     },
     horarioturno: {
         type: DataTypes.INTEGER,
