@@ -24,6 +24,7 @@
   "dependencies": {
     "@babel/cli": "^7.27.2",
     "babel-node": "^0.0.1-security",
+    "cors": "^2.8.5",
     "express": "^5.1.0",
     "install": "^0.13.0",
     "npm": "^11.4.1",
