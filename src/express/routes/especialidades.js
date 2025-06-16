@@ -1,8 +1,8 @@
 const {models} = require('../../sequelize')
 
 async function getAll(req, res) {
-	const especialidad = await models.especialidad.findAll();
-	res.status(200).json(especialidad);
+	const especialidades = await models.especialidad.findAll();
+	res.status(200).json(especialidades);
 };
 
 async function getById(req, res) {

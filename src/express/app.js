@@ -2,18 +2,16 @@ const express = require('express');
 const cors = require('cors'); 
 const bodyParser = require('body-parser');
 
-const { getById, getAll } = require('../express/routes/especialidades');
-
 const routes = {
-    especialidad: require('../express/routes/especialidades'),
-    doctores: require('../express/routes/doctores'),
-    horario: require('../express/routes/horarios'),
-    paciente: require('../express/routes/pacientes'),
-    turno: require('../express/routes/turnos'),
+    especialidades: require('./routes/especialidades'),
+    doctores: require('./routes/doctores'),
+    horarios: require('./routes/horarios'),
+    pacientes: require('./routes/pacientes'),
+    turnos: require('./routes/turnos'),
 }
-
  
 const app = express();
+
 const corsOptions = {
   origin: 'http://localhost:5173', 
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
@@ -21,26 +19,25 @@ const corsOptions = {
 };
 
 app.use(cors(corsOptions));
-
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 //endpoints especialidad
-app.get(`/especialidad`, routes.especialidad.getAll)
-app.get(`/especialidad/:id`, routes.especialidad.getById)
+app.get(`/especialidades`, routes.especialidades.getAll)
+app.get(`/especialidades/:id`, routes.especialidades.getById)
 //endpoints doctor
-app.get(`/especialidad/:id/doctores`, routes.doctores.getAll)
-app.get(`/especialidad/:id/doctores/:id`, routes.doctores.getById)
+app.get(`/especialidades/:id/doctores`, routes.doctores.getAll)
+app.get(`/especialidades/:id/doctores/:id`, routes.doctores.getById)
 //endpoints horario
-app.get(`/especialidad/:id/doctores/:id/horario`, routes.horario.getAll)
-app.get(`/especialidad/:id/doctores/:id/horario/:id`, routes.horario.getById)
+app.get(`/especialidades/:id/doctores/:id/horarios`, routes.horarios.getAll)
+app.get(`/especialidades/:id/doctores/:id/horarios/:id`, routes.horarios.getById)
 //endpoints turno
-app.get(`/turno`, routes.turno.getAll )
-app.get(`/turno/:id`, routes.turno.getById)
-app.post(`/turno`, routes.turno.create)
+app.get(`/turnos`, routes.turnos.getAll )
+app.get(`/turnos/:id`, routes.turnos.getById)
+app.post(`/turnos`, routes.turnos.create)
 //endpoints paciente
-app.get(`/turno/:id/paciente`, routes.paciente.getAll)
-app.get(`/turno/:id/paciente/:id`, routes.paciente.getById)
-app.post(`/turno/:id/paciente`, routes.paciente.create)
+app.get(`/turnos/:id/pacientes`, routes.pacientes.getAll)
+app.get(`/turnos/:id/pacientes/:id`, routes.pacientes.getById)
+app.post(`/turnos/:id/pacientes`, routes.pacientes.create)
 
 module.exports = app;
