@@ -1,17 +1,20 @@
 const express = require('express');
-const cors = require('cors'); 
-const bodyParser = require('body-parser');
+const bodyParser = require('body-parser'); 
+const cors = require('cors')
 
-const app = express()
+const app = express();
 app.use(cors())
 
+
 const routes = {
-  especialidades: require('./routes/especialidades'),
-  doctores: require('./routes/doctores'),
-  horarios: require('./routes/horarios'),
-  pacientes: require('./routes/pacientes'),
-  turnos: require('./routes/turnos'),
+    especialidades: require('../express/routes/especialidades'),
+    doctores: require('../express/routes/doctores'),
+    horarios: require('../express/routes/horarios'),
+    pacientes: require('../express/routes/pacientes'),
+    turnos: require('../express/routes/turnos'),
 }
+
+
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
