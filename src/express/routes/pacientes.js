@@ -1,4 +1,5 @@
 const {models} = require('../../sequelize')
+const { body, validationResult } = require('express-validator');
 
 async function getAll(req, res) {
 	const pacientes = await models.paciente.findAll();
@@ -14,6 +15,14 @@ async function getById(req, res) {
 		res.status(404).send('404 - Not found');
 	}
 };
+
+//validar los datos que pasa el usuario
+const validateCreatePaciente = [
+  body('nombre').notEmpty().withMessage('El nombre es obligatorio'),
+  body('apellido').notEmpty().withMessage('El apellido es obligatorio'),
+  body('dni').isInt({ min: 1 }).withMessage('El DNI debe ser un número válido'),
+  body('email').isEmail().withMessage('Debe ingresar un email válido')
+];
 
 async function create(req, res) {
 	if (req.body.id) {

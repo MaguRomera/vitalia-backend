@@ -31,6 +31,6 @@ app.post(`/turnos`, routes.turnos.create)
 //endpoints paciente
 app.get(`/turnos/:id/pacientes`, routes.pacientes.getAll)
 app.get(`/turnos/:id/pacientes/:id`, routes.pacientes.getById)
-app.post(`/turnos/:id/pacientes`, routes.pacientes.create)
+app.post(`/turnos/:id/pacientes`, routes.pacientes.validateCreatePaciente, routes.pacientes.create)
 
 module.exports = app;

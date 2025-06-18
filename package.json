@@ -25,6 +25,7 @@
     "@babel/cli": "^7.27.2",
     "babel-node": "^0.0.1-security",
     "express": "^5.1.0",
+    "express-validator": "^7.2.1",
     "install": "^0.13.0",
     "npm": "^11.4.1",
     "sequelize": "^6.37.7",
