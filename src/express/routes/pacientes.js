@@ -21,7 +21,14 @@ const validateCreatePaciente = [
   body('nombre').notEmpty().withMessage('El nombre es obligatorio'),
   body('apellido').notEmpty().withMessage('El apellido es obligatorio'),
   body('dni').isInt({ min: 1 }).withMessage('El DNI debe ser un número válido'),
-  body('email').isEmail().withMessage('Debe ingresar un email válido')
+  body('email').isEmail().withMessage('Debe ingresar un email válido'),
+  (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errores: errors.array() });
+    }
+    next();
+  }
 ];
 
 async function create(req, res) {
@@ -65,4 +72,5 @@ module.exports = {
 	create,
 	update,
 	remove,
+	validateCreatePaciente,
 };
