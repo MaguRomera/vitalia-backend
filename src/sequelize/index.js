@@ -18,7 +18,9 @@ sequelize.define('especialidad',{
         type: DataTypes.STRING,
         allowNull: false
     }
-})
+}, {
+  timestamps: false
+});
 
 sequelize.define('doctor',{
     id: {
@@ -42,7 +44,9 @@ sequelize.define('doctor',{
         type: DataTypes.STRING,
         allowNull: false
     },
-})
+}, {
+  timestamps: false
+});
 
 sequelize.define('horario',{
     hora: {
@@ -58,7 +62,9 @@ sequelize.define('horario',{
         primaryKey: true,
         autoIncrement: true
     },
-})
+}, {
+  timestamps: false
+});
 
 sequelize.define('turno',{
     id: {
@@ -78,7 +84,9 @@ sequelize.define('turno',{
         type: DataTypes.INTEGER,
         allowNull: false
     },
-})
+}, {
+  timestamps: false
+});
 
 sequelize.define('paciente',{
     id: {
@@ -102,7 +110,9 @@ sequelize.define('paciente',{
         type: DataTypes.STRING,
         allowNull: false
     },
-})
+}, {
+  timestamps: false
+});
 
 //asociaciones
 const {
@@ -118,6 +128,11 @@ horario.belongsTo(doctor);
 paciente.belongsTo(turno);
 especialidad.hasMany(doctor);
 doctor.hasMany(horario);
-turno.hasOne(horario);
+turno.hasOne(horario, {
+  foreignKey: {
+    allowNull: true, // permite nulos
+    name: 'turnoId'
+  }
+});
 
 module.exports = sequelize;
