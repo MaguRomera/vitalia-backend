@@ -15,7 +15,11 @@ async function init() {
 	}
 
     // sync models (create tables if they don't exist)
-    await sequelize.sync();
+    sequelize.sync({ force: false })  // ¡Ojo! con `force: true` se borra todo cada vez
+	.then(() => {
+		console.log('Tablas sincronizadas');
+	})
+	.catch(err => console.error('Error al sincronizar:', err));
 
 	console.log(`Starting Sequelize + Express example on port ${PORT}...`);
 
