@@ -2,23 +2,17 @@ const express = require('express');
 const cors = require('cors'); 
 const bodyParser = require('body-parser');
 
+const app = express()
+app.use(cors())
+
 const routes = {
-    especialidades: require('./routes/especialidades'),
-    doctores: require('./routes/doctores'),
-    horarios: require('./routes/horarios'),
-    pacientes: require('./routes/pacientes'),
-    turnos: require('./routes/turnos'),
+  especialidades: require('./routes/especialidades'),
+  doctores: require('./routes/doctores'),
+  horarios: require('./routes/horarios'),
+  pacientes: require('./routes/pacientes'),
+  turnos: require('./routes/turnos'),
 }
- 
-const app = express();
 
-const corsOptions = {
-  origin: 'http://localhost:5173', 
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization', "Access-Control-Allow-Origin"],
-};
-
-app.use(cors(corsOptions));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
