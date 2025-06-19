@@ -32,13 +32,30 @@ const validateCreatePaciente = [
 ];
 
 async function create(req, res) {
-	if (req.body.id) {
-		res.status(400).send(`Bad request: ID should not be provided, since it is determined automatically by the database.`)
-	} else {
-		await models.paciente.create(req.body);
-		res.status(201).end();
-	}
-};
+  const { nombre, apellido, dni, email } = req.body;
+  try {
+    const pacienteExistente = await models.paciente.findOne({ where: { dni } });
+    if (pacienteExistente) {
+      return res.status(200).json({
+        mensaje: 'El paciente ya existe. Se recuperaron sus datos.',
+        paciente: pacienteExistente,
+      });
+    }
+    const nuevoPaciente = await models.paciente.create({
+      nombre,
+      apellido,
+      dni,
+      email,
+    });
+    res.status(201).json({
+      mensaje: 'Paciente creado exitosamente',
+      paciente: nuevoPaciente,
+    });
+  } catch (error) {
+    console.error('Error al crear o verificar paciente', error);
+    res.status(500).json({ mensaje: 'Error en el servidor' });
+  }
+}
 
 async function update(req, res) {
 	const id = req.params.id;
