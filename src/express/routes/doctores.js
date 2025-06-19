@@ -1,7 +1,12 @@
 const {models} = require('../../sequelize')
 
 async function getAll(req, res) {
-	const doctores = await models.doctor.findAll();
+	const { especialidadId } = req.query;
+	const where = {};
+	if (especialidadId) {
+		where.especialidadId = especialidadId;
+	}
+	const doctores = await models.doctor.findAll({where});
 	res.status(200).json(doctores);
 };
 
