@@ -1,14 +1,38 @@
 const {models} = require('../../sequelize')
 
 async function getAll(req, res) {
-	const { doctorId } = req.query;
-	const where = {};
-	if (doctorId) {
-		where.doctorId = doctorId;
-	}
-	const horarios = await models.horario.findAll({where});
-	res.status(200).json(horarios);
-};
+  const { doctorId, fecha } = req.query;
+
+  const where = {};
+  if (doctorId) {
+    where.doctorId = doctorId;
+  }
+
+  try {
+	const horarios = await models.horario.findAll({
+	where,
+	include: [{
+		model: models.turno,
+		as: 'turno',
+		required: false,
+		where: fecha ? { fecha } : undefined
+	}]
+	});
+
+    // Marcar como ocupado solo si hay un turno asociado para esa fecha
+    const resultado = horarios.map(h => ({
+      id: h.id,
+      hora: h.hora,
+      doctorId: h.doctorId,
+      ocupado: h.turno ? true : false
+    }));
+
+    res.status(200).json(resultado);
+  } catch (error) {
+    console.error("Error al obtener horarios:", error);
+    res.status(500).json({ mensaje: "Error al obtener horarios" });
+  }
+}
 
 async function getById(req, res) {
 	const id = req.params.id;
@@ -30,20 +54,17 @@ async function create(req, res) {
 };
 
 async function update(req, res) {
-	const id = req.params.id;
-
-	// We only accept an UPDATE request if the `:id` param matches the body `id`
-	if (req.body.id === id) {
-		await models.horario.update(req.body, {
-			where: {
-				id: id
-			}
-		});
-		res.status(200).end();
-	} else {
-		res.status(400).send(`Bad request: param ID (${id}) does not match body ID (${req.body.id}).`);
-	}
-};
+  const id = req.params.id;
+  try {
+    await models.horario.update(req.body, {
+      where: { id }
+    });
+    res.status(200).json({ mensaje: 'Horario actualizado' });
+  } catch (err) {
+    console.error('Error en el backend al actualizar horario', err);
+    res.status(500).json({ mensaje: 'Error al actualizar el horario', error: err });
+  }
+}
 
 async function remove(req, res) {
 	const id = req.params.id;
