@@ -29,6 +29,7 @@ app.put(`/doctores/:id`, routes.doctores.update)
 app.delete(`/doctores/:id`, routes.doctores.remove)
 app.post(`/doctores/:id`, routes.doctores.create)
 //endpoints horario
+app.get(`/horarios/disponibles`, routes.horarios.getDisponibles)
 app.get(`/horarios`, routes.horarios.getAll)
 app.get(`/horarios/:id`, routes.horarios.getById)
 app.put(`/horarios/:id`, routes.horarios.update)

@@ -1,32 +1,44 @@
-const {models} = require('../../sequelize')
+const { Sequelize } = require('sequelize');
+const sequelize = require('../../sequelize');
+const {models} = require('../../sequelize');
+const { Op } = Sequelize;
 
 async function getAll(req, res) {
+	const horarios = await models.horario.findAll({});
+	res.status(200).json(horarios);
+};
+
+//obtener los horarios q sean de x doctor y no estén en el 
+// turno para la fecha
+async function getDisponibles(req, res) {
   const { doctorId, fecha } = req.query;
-
-  const where = {};
-  if (doctorId) {
-    where.doctorId = doctorId;
+  const whereHorario = {};
+  if (doctorId) whereHorario.doctorId = doctorId;
+  const whereTurno = {};
+  if (fecha) {
+  // Convierte el string de fecha 'YYYY-MM-DD' a Date, sino se rompe todo
+    const startOfDay = new Date(fecha);
+    const endOfDay = new Date(fecha);
+    endOfDay.setDate(endOfDay.getDate() + 1);
+    whereTurno.fecha = {
+      [Op.gte]: startOfDay, 
+      [Op.lt]: endOfDay     
+    };
   }
-
   try {
-	const horarios = await models.horario.findAll({
-	where,
-	include: [{
-		model: models.turno,
-		as: 'turno',
-		required: false,
-		where: fecha ? { fecha } : undefined
-	}]
-	});
-
-    // Marcar como ocupado solo si hay un turno asociado para esa fecha
-    const resultado = horarios.map(h => ({
+    const horarios = await models.horario.findAll({
+      where: whereHorario,
+      include: [{
+        model: models.turno,
+        required: false,
+        where: Object.keys(whereTurno).length > 0 ? whereTurno : undefined
+      }]
+    });
+    const resultado = horarios.filter(h => !h.turno).map(h => ({
       id: h.id,
       hora: h.hora,
       doctorId: h.doctorId,
-      ocupado: h.turno ? true : false
     }));
-
     res.status(200).json(resultado);
   } catch (error) {
     console.error("Error al obtener horarios:", error);
@@ -82,4 +94,5 @@ module.exports = {
 	create,
 	update,
 	remove,
+  getDisponibles
 };

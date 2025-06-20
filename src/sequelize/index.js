@@ -53,10 +53,6 @@ sequelize.define('horario',{
         type: DataTypes.STRING,
         allowNull: false
     },
-    ocupado: {
-        type: DataTypes.BOOLEAN,
-        allowNull: false
-    },
     id: {
         type: DataTypes.INTEGER,
         primaryKey: true,
@@ -73,11 +69,7 @@ sequelize.define('turno',{
         autoIncrement: true
     },
     fecha: {
-        type: DataTypes.STRING,
-        allowNull: false
-    },
-    paciente: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.DATE,
         allowNull: false
     },
 }, {
@@ -121,22 +113,11 @@ const {
 
 doctor.belongsTo(especialidad);
 horario.belongsTo(doctor);
-paciente.belongsTo(turno);
+turno.belongsTo(paciente);
+paciente.hasMany(turno);
 especialidad.hasMany(doctor);
-doctor.hasMany(horario);
-horario.hasOne(turno, {
-  foreignKey: {
-    name: 'horarioId',
-    allowNull: true
-  },
-  as: 'turno'
-});
-turno.belongsTo(horario, {
-  foreignKey: {
-    name: 'horarioId',
-    allowNull: true
-  },
-  as: 'horario'
-});
-
+turno.belongsTo(doctor);
+doctor.hasMany(turno);
+turno.belongsTo(horario, { foreignKey: { allowNull: true } });
+horario.hasOne(turno, { foreignKey: { allowNull: true } });
 module.exports = sequelize;
