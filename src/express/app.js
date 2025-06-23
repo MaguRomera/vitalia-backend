@@ -1,6 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser'); 
 const cors = require('cors')
+require('dotenv').config()
 
 const app = express();
 app.use(cors())
@@ -11,10 +12,14 @@ const routes = {
     horarios: require('../express/routes/horarios'),
     pacientes: require('../express/routes/pacientes'),
     turnos: require('../express/routes/turnos'),
+    mailer: require('../express/routes/mailer-routes')
 }
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+
+//endpoints mailer
+app.use('/send-mail', routes.mailer)
 
 //endpoints especialidad
 app.get(`/especialidades`, routes.especialidades.getAll)
